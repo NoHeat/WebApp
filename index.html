@@ -1,68 +1,73 @@
-<!DOCTYPE html PUBLIC>
- 
 <html>
- 
 <head>
- 
-    <title>FAK</title>
- 
-    <link rel="Stylesheet"  href="styles/stylesheet.css"/>
- 
-     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
- 
-<body>
- 
-<h1>Input inventory to database</h1>
- 
-              <form id="mycontact">
- 
-                     <fieldset>
- 
-                           <legend>Input fields</legend>
- 
-                           <ol>
- 
-                                  <li>
- 
-                                         <label for="username">Name</label>
- 
-                                         <input id="username" type="text" placeholder="Name of item" required autofocus pattern=" ">
- 
-                        <input type="hidden" id="id"/>
- 
-                                  </li>
- 
-                                  <li>
- 
-                                         <label for="useremail">Details</label>
- 
-                                         <input id="useremail" type="text" placeholder="Details of item(emailfornow)" required pattern=" ">
- 
-                                  </li>
- 
-                           </ol>
- 
-                     </fieldset>
- 
-                <button id="btnReset" type=submit>Reset</button>
- 
-                     <button id="submitButton" type="submit">SAVE</button>
- 
-                <button id="btnUpdate" type=submit>UPDATE</button>
- 
-                <button id="btnDrop" type=submit>DROP</button>
- 
-              </form><br />
- 
-        <div id="results"></div>
+<title>Chill Technologies</title>
+<script type="text/javascript" src="https://raw.githubusercontent.com/kripken/sql.js/master/js/sql.js"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/kripken/sql.js/master/js/worker.sql.js"></script>
+<script type="text/javascript" src="/var/www/html/sql.js"></script>
+<script type="text/javascript" src="http://alasql.org/demo/016sqlite/sql.js"></script>
+<script src="//cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script> 
+    <script src="alasql.js"></script>
+    <script src="sql.js"></script>
+    <script>
+        alasql('ATTACH SQLITE DATABASE Chinook("databaseD.sqlite");\
+            USE Chinook; \
+            SELECT * FROM codes',[],function(res){
+                console.log("data:",res.pop());
+        });
+    </script>
 
-<h2>Work in progress</h2>
-<img src="http://i.imgur.com/hGAqezz.gif" alt="GoatFaint" style="width:400px;height:225px;"> 
+<!-------------------------------------------------------------------------------------------------->
+</head>
+<body>
+
+<h1>Read SQLite files in browser</h1>
+<div id="res"></div>
+<script>
+	function loadBinaryFile(path,success) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", path, true); 
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function() {
+            var data = new Uint8Array(xhr.response);
+            var arr = new Array();
+            for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+            success(arr.join(""));
+        };
+        xhr.send();
+    };
+
+
+	loadBinaryFile('databaseD.sqlite', function(data){
+		var db = new SQL.Database(data);
+		
+		var res = db.exec("SELECT * FROM codes");
+		document.getElementById("res").textContent = JSON.stringify(res);
+	});
+
+function createTable() {
+    // Create table.
+    var table = document.createElement('table');
+    // Insert New Row for table at index '0'.
+    var row1 = table.insertRow(0);
+    // Insert New Column for Row1 at index '0'.
+    var row1col1 = row1.insertCell(0);
+    row1col1.innerHTML = 'Col1';
+    // Insert New Column for Row1 at index '1'.
+    var row1col2 = row1.insertCell(1);
+    row1col2.innerHTML = 'Col2';
+    // Insert New Column for Row1 at index '2'.
+    var row1col3 = row1.insertCell(2);
+    row1col3.innerHTML = 'Col3';
+    // Append Table into div.
+    var div = document.getElementById('res');
+    div.appendChild(table);
+}
+
+</script>
+<!-------------------------------------------------------------------------------------------------->
+
+<img src="pic1.jpeg">
+<img src="pic2.jpeg">
 
 </body>
- 
- <script type="text/javascript" src="scripts/javascript.js"> </script>
- 
 </html>
- 
-<span style="font-family: Calibri; font-size: small;"> 
