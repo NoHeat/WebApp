@@ -1,20 +1,7 @@
 <html>
 <head>
 <title>Chill Technologies</title>
-<script type="text/javascript" src="https://raw.githubusercontent.com/kripken/sql.js/master/js/sql.js"></script>
-<script type="text/javascript" src="https://raw.githubusercontent.com/kripken/sql.js/master/js/worker.sql.js"></script>
-<script type="text/javascript" src="/var/www/html/sql.js"></script>
-<script type="text/javascript" src="http://alasql.org/demo/016sqlite/sql.js"></script>
-<script src="//cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script> 
-    <script src="alasql.js"></script>
-    <script src="sql.js"></script>
-    <script>
-        alasql('ATTACH SQLITE DATABASE Chinook("databaseD.sqlite");\
-            USE Chinook; \
-            SELECT * FROM codes',[],function(res){
-                console.log("data:",res.pop());
-        });
-    </script>
+<script src="sql.js"></script>
 
 <!-------------------------------------------------------------------------------------------------->
 </head>
@@ -22,7 +9,9 @@
 
 <h1>Read SQLite files in browser</h1>
 <div id="res"></div>
+<!-------------------------------------------------------------------------------------------------->
 <script>
+/*******************this makes the sql work******************/
 	function loadBinaryFile(path,success) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", path, true); 
@@ -39,35 +28,21 @@
 
 	loadBinaryFile('databaseD.sqlite', function(data){
 		var db = new SQL.Database(data);
+		var res = db.exec("SELECT * FROM codes ");
+		document.getElementById("res").innerHTML = JSON.stringify(res, ["values"], "<pre>").substr(1,JSON.stringify(res, null, "<pre>").length-2);  
+		//res.length;
 		
-		var res = db.exec("SELECT * FROM codes");
-		document.getElementById("res").textContent = JSON.stringify(res);
 	});
-
-function createTable() {
-    // Create table.
-    var table = document.createElement('table');
-    // Insert New Row for table at index '0'.
-    var row1 = table.insertRow(0);
-    // Insert New Column for Row1 at index '0'.
-    var row1col1 = row1.insertCell(0);
-    row1col1.innerHTML = 'Col1';
-    // Insert New Column for Row1 at index '1'.
-    var row1col2 = row1.insertCell(1);
-    row1col2.innerHTML = 'Col2';
-    // Insert New Column for Row1 at index '2'.
-    var row1col3 = row1.insertCell(2);
-    row1col3.innerHTML = 'Col3';
-    // Append Table into div.
-    var div = document.getElementById('res');
-    div.appendChild(table);
-}
 
 </script>
 <!-------------------------------------------------------------------------------------------------->
 
 <img src="pic1.jpeg">
 <img src="pic2.jpeg">
-
+<a href="db.html">database json</a>
+<a href="recipe.html">recipe json</a>
+<a href="img1.html">img1</a>
+<a href="img2.html">img2</a>
+<a href="img2.html">img3</a>
 </body>
 </html>
